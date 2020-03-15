@@ -74,10 +74,6 @@ client.on('message', message => {
   		.setColor(0xFF4500);
     
     if (message.guild && !message.channel.memberPermissions(client.user).has('SEND_MESSAGES')) return;
-    
-    if (message.guild && !message.channel.memberPermissions(client.user).has('EMBED_LINKS')) {
-      return message.channel.send("I need the `Embed Links` permission. Please contact an administrator on this server.");
-    }
 
     if (message.author.id == '365975655608745985') {
       message.embeds.forEach((e) => {
@@ -92,13 +88,6 @@ client.on('message', message => {
                 .hash(body)
                 .then(hash => {
                   let result = db[hash];
-                  
-                  if (result === undefined) {
-                    embed
-                      .setTitle("Pokemon Not Found")
-                      .setDescription("Please contact the owner CHamburr#2591 to add this Pokemon to the database.");
-                    return message.channel.send(embed);
-                  }
                 
                   new Jimp(1024, 256, "#303030", (err, img) => {
                     Jimp.loadFont(Jimp.FONT_SANS_64_WHITE).then(font => {
@@ -113,7 +102,7 @@ client.on('message', message => {
                         }, img.bitmap.width, img.bitmap.height);
                         img.getBufferAsync("image/png")
                           .then(res => {
-                              message.channel.send({files:[{attachment: res, name: "file.png"}]});
+                              message.channel.send(result);
                           });
                       });
                     });
